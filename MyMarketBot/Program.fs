@@ -1,6 +1,14 @@
-﻿open System
+﻿module MyMarketBot.Program
+
+open System
+open MyMarketBot.Telegram
 
 [<EntryPoint>]
 let main _ =
-    printfn "Hello world %s" "from F#"
-    0 // return an integer exit code
+    let token = Environment.GetEnvironmentVariable "TELEGRAM_BOT_TOKEN"
+    
+    use bot = run token
+    
+    Console.WriteLine "Press key to stop"
+    Console.ReadKey() |> ignore
+    0
