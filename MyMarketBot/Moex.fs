@@ -12,22 +12,19 @@ type MoexIndexProvider = XmlProvider<indexUrl>
 type IndexDayData =
     | NoDataForADay
     | Today of decimal
-    | TodayWithDailyChange of today: decimal * change: decimal
+    | TwoDays of today: decimal * yesterday: decimal
 
 let makeUrl index (startDate: DateTime) (endDate: DateTime) =
     let dateFormat = "yy-MM-dd"
 
-    indexUrl
-        .Replace("RTSI", index)
-        .Replace("2001-10-15", startDate.ToString(dateFormat))
-        .Replace("2001-10-16", endDate.ToString(dateFormat))
+    indexUrl.Replace("RTSI", index)
+            .Replace("2001-10-15", startDate.ToString(dateFormat))
+            .Replace("2001-10-16", endDate.ToString(dateFormat))
 
 let loadData index (now: DateTime) =
     async {
         let yesterday =
-            if DateTime.Today.DayOfWeek = DayOfWeek.Monday
-            then 3.0
-            else 1.0
+            if now.DayOfWeek = DayOfWeek.Monday then 3.0 else 1.0
             |> TimeSpan.FromDays
             |> now.Subtract
 
@@ -37,8 +34,9 @@ let loadData index (now: DateTime) =
             
         let data = MoexIndexProvider.Parse rowData
 
-        return match data.Data.Rows |> Array.map (fun x -> x.Close) with
-               | [| today |] -> Today today
-               | [| yesterday; today |] -> TodayWithDailyChange (today, (today - yesterday) / yesterday)
-               | _ -> NoDataForADay
+        let data = match data.Data.Rows |> Array.map (fun x -> x.Close) with
+                   | [| today |] -> Today today // can be yesterday value
+                   | [| yesterday; today |] -> TwoDays (today, yesterday)
+                   | _ -> NoDataForADay
+        return (index, data)
     }

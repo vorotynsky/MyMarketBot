@@ -1,13 +1,27 @@
 ﻿module MyMarketBot.Program
 
 open System
+open System.Text
 open MyMarketBot.Telegram
 open MyMarketBot.Moex
 
-let sendIndexData chatId bot index = async {
-    let! data = loadData index DateTime.Today
-    do! send chatId (sprintf "%s: %A" index data) bot |> Async.Ignore
-}
+let INDEXES = [| "IMOEX"; "RTSI"; "RGBITR" |]
+
+let prepareMessage (indexes: (string * IndexDayData)[]) =
+    let indexes = indexes |> dict
+    let toString = function
+        | NoDataForADay -> "N/D"
+        | Today today -> today.ToString()
+        | TwoDays (today, yesterday) ->
+            sprintf "%s (%+.2f%%)" (today.ToString()) (float((today - yesterday) / yesterday * 100M))
+    let message index = sprintf "%s: %s" index (toString <| indexes.[index])
+    
+    StringBuilder()
+        .Append(DateTime.Today.ToShortDateString()).AppendLine(" итоги дня:\n")
+        .AppendJoin("\n", Array.map message INDEXES)
+        .ToString()
+        
+let asyncWait async = (Async.StartAsTask async).Wait()
 
 [<EntryPoint>]
 let main _ =
@@ -16,11 +30,12 @@ let main _ =
    
     use bot = run token
     
-    let task = 
-        [| "IMOEX"; "RTSI"; "RGBITR" |]
-        |> Array.map (sendIndexData chatId bot)
-        |> Async.Parallel
-        |> Async.StartAsTask
-        
-    task.Wait()
+    async {
+        let! indexes =
+                INDEXES
+                |> Array.map (fun index -> (loadData index (DateTime.Now)))
+                |> Async.Parallel
+        let message = prepareMessage indexes
+        do! send chatId message bot |> Async.Ignore
+    } |> asyncWait
     0
