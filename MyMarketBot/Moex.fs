@@ -14,6 +14,11 @@ type IndexDayData =
     | Today of decimal
     | TwoDays of today: decimal * yesterday: decimal
 
+let (|HasToday|_|) = function
+    | NoDataForADay -> None
+    | Today today -> Some today
+    | TwoDays (today, _) -> Some today
+
 let makeUrl index (startDate: DateTime) (endDate: DateTime) =
     let dateFormat = "yy-MM-dd"
 
