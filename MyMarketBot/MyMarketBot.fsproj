@@ -6,8 +6,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Moex.fs" />
+        <Compile Include="Moex\Common.fs" />
+        <Compile Include="Moex\Index.fs" />
         <Compile Include="Telegram.fs" />
+        <Compile Include="Message.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 
