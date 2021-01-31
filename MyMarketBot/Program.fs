@@ -2,9 +2,13 @@
 
 open System
 open MyMarketBot.Telegram
+open MyMarketBot.Moex
 open MyMarketBot.Moex.Index
 
 let asyncWait async = (Async.StartAsTask async).Wait()
+
+let load f = Array.map (fun ticker -> f ticker (DateTime(2021, 1, 27))) >> Async.Parallel
+    
 
 [<EntryPoint>]
 let main _ =
@@ -14,11 +18,10 @@ let main _ =
     use bot = run token
     
     async {
-        let! indexes =
-             moexIndexes
-             |> Array.map (fun index -> (loadData index (DateTime.Now)))
-             |> Async.Parallel
-        let message = Message.prepareMessage indexes
+        let! indexes = moexIndexes |> load Index.loadData
+        let! currencies = [| "USD"; "EUR" |] |> load Currency.loadData
+        
+        let message = Message.prepareMessage indexes currencies
         do! send chatId message bot |> Async.Ignore
     } |> asyncWait
     
