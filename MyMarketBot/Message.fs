@@ -12,21 +12,26 @@ let toString formatter = function
             sprintf "%s (%+.2f%%)" (formatter today) (float((today - yesterday) / yesterday * 100M))
           
 
-let prepareMessage (indexes: (string * MoexDayData)[]) =
-    let indexes = indexes |> dict
+let prepareMessage (indexes: (string * MoexDayData)[]) (currencies: (string * MoexDayData)[]) =
+    let indexes = dict indexes 
+    let currencies = dict currencies
     let message index = sprintf "%s: %s" index (toString (sprintf "%.2f") indexes.[index])
     
     let builder = StringBuilder()
-    let sbprintf = Printf.bprintf builder
+    let sbprintf format = Printf.bprintf builder format
     
     
     sbprintf "%s итоги дня:\n\n" (DateTime.Today.ToShortDateString())
     
     builder.AppendJoin("\n", Array.map message moexIndexes) |> ignore
     
-    sbprintf "\n\n Spread index: %s"
+    sbprintf "\n\nSpread index: %s"
         (toString
              (sprintf "%.2f%%" << rangeSpreadIndex)
              (spreadIndex indexes.["IMOEX"] indexes.["RGBITR"]))
+        
+    sbprintf "\n\nUSD/RUB: %s \nEUR/RUB: %s"
+        (toString (sprintf "%.2f") currencies.["USD"])
+        (toString (sprintf "%.2f") currencies.["EUR"])
 
     builder.ToString()
