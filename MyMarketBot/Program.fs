@@ -7,7 +7,7 @@ open MyMarketBot.Moex.Index
 
 let asyncWait async = (Async.StartAsTask async).Wait()
 
-let load f = Array.map (fun ticker -> f ticker (DateTime(2021, 1, 27))) >> Async.Parallel
+let load f = Array.map (fun ticker -> f ticker DateTime.Now) >> Async.Parallel
     
 
 [<EntryPoint>]

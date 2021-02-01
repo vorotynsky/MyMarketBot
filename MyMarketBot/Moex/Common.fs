@@ -23,7 +23,7 @@ let yesterday (now: DateTime) =
     |> TimeSpan.FromDays
     |> now.Subtract
     
-let makeData = function
+let makeData s m = Array.sortBy s >> Array.map m >> function
     | [| today |] -> Today today
-    | [| today; yesterday |] -> TwoDays (today, yesterday)
+    | [| yesterday; today |] -> TwoDays (today, yesterday)
     | _ -> NoDataForADay

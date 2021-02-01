@@ -17,5 +17,5 @@ let loadData currency now =
             makeUrl currency (yesterday now) now
             |> MoexCurrencyProvider.AsyncLoad
         
-        return (currency, data.Data.Rows |> Array.map (fun x -> x.Rate) |> makeData)
+        return (currency, data.Data.Rows |> makeData (fun x -> x.Tradedate) (fun x -> x.Rate))
     }
