@@ -20,7 +20,7 @@ let loadData index now =
             makeUrl index (yesterday now) now
             |> MoexIndexProvider.AsyncLoad
 
-        return (index, data.Data.Rows |> Array.map (fun x -> x.Close) |> makeData)
+        return (index, data.Data.Rows |> makeData (fun x -> x.Tradedate) (fun x -> x.Close))
     }
     
 let spreadIndex imoex rgbitr =
