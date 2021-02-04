@@ -4,7 +4,7 @@ open System
 open FSharp.Data
 open MyMarketBot.Moex.Common
 
-let moexIndexes = [| "IMOEX"; "RTSI"; "RGBITR" |]
+let moexIndexes = [| "IMOEX"; "RTSI"; "RGBI"; "RGBITR" |]
 
 [<Literal>]
 let private indexUrl =
