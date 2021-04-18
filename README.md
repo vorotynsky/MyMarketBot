@@ -23,19 +23,36 @@ This bot is a console application that sends a message to the specified user and
 > The Moscow Exchange provides close values after 19:00 MSK.
 > If you run this bot before 19:00 MSK or on weekends you will get yesterday values or N/D.
 
+### ZCYC
+
+This bot can send Yield curve (zcyc from moex).
+
+![Example of zcyc](./zcyc.jpg)
+
+---
+
 ## Set up
 
 Steps to run this bot:
 
 1. Build the solution using `dotnet build`.
-2. Set env-variables `TELEGRAM_BOT_TOKEN` and `TELEGRAM_SUBSCRIBER_ID`
-3. Run F# project `dotnet run --project MyMarketBot`
+2. Set env-variables `TELEGRAM_BOT_TOKEN` and `TELEGRAM_SUBSCRIBER_ID`.
+3. Set path to python interpreter to `PYTHON_INTERPRETER`.S
+4. Run F# project `dotnet run --project MyMarketBot -daily -zcyc`
 
 Check [a GitHub action](https://github.com/vorotynsky/MyMarketBot/blob/master/.github/workflows/evening.yml) to see these steps.
 
+
+
 ### Arguments
+
+Command line args:
+
+ - `-daily` - send daily message with indexes and currency.
+ - `-zcyc`  - send yield curve for russian bonds.
 
 Environment variables:
 
  - `TELEGRAM_BOT_TOKEN` - your bot's token. You can get it from Bot Father.
  - `TELEGRAM_SUBSCRIBER_ID` - your chat it. To get it run your bot in a debugger mode and send a message. Bot log your chat id to a console. 
+ - `PYTHON_INTERPRETER` - path to python interpreter. Uses with `-zcyc`.

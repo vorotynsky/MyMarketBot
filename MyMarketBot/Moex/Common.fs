@@ -12,8 +12,9 @@ let (|HasToday|_|) = function
     | Today today -> Some today
     | TwoDays (today, _) -> Some today
 
+let formatDate (date: DateTime) = date.ToString "yy-MM-dd"
+
 let makeUrlBuilder (url: string) (_index: string) _start _end index startDate endDate =
-    let formatDate (date: DateTime) = date.ToString "yy-MM-dd"
     url.Replace(_index, index)
        .Replace(_start, formatDate startDate)
        .Replace(_end, formatDate endDate)
@@ -27,3 +28,5 @@ let makeData s m = Array.sortBy s >> Array.map m >> function
     | [| today |] -> Today today
     | [| yesterday; today |] -> TwoDays (today, yesterday)
     | _ -> NoDataForADay
+
+let fromResult x = async { return x }
