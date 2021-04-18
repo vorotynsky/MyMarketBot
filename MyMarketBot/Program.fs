@@ -25,10 +25,13 @@ let zcyc bot chatId = async {
     let! _, w = YieldCurve.loadZcycAround (DateTime.Now.AddDays(-7.0))
     let! _, n = YieldCurve.loadZcycAround (DateTime.Now)
 
-    do Plot.generateScript "./plot.py" "./plot_data.py" (n, w, m)
-    do! Plot.execute python (Path.GetFileName "./plot_data.py")
+    let (~~) (str: string): string = Path.Join(AppDomain.CurrentDomain.BaseDirectory, str)
+    let src, data, picture = ~~"plot.py", ~~"plot_data.py", ~~"zcyc.png"
+    
+    do Plot.generateScript src data (n, w, m)
+    do! Plot.execute python data picture
 
-    do! sendPicture chatId Message.zcyc "./zcyc.png" bot |> Async.Ignore    
+    do! sendPicture chatId Message.zcyc picture bot |> Async.Ignore    
 }
 
 [<EntryPoint>]
