@@ -1,4 +1,5 @@
 ﻿import matplotlib.pyplot as plt
+import sys
 
 data_w = []
 data_m = []
@@ -17,4 +18,4 @@ plt.scatter(x, y0, marker=".", c='red')
 
 plt.legend(["week ago", "month ago", "now"])
 
-plt.savefig("zcyc.png", facecolor='w', dpi=240)
+plt.savefig(sys.argv[1], facecolor='w', dpi=240)
