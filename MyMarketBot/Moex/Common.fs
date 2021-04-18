@@ -28,3 +28,5 @@ let makeData s m = Array.sortBy s >> Array.map m >> function
     | [| today |] -> Today today
     | [| yesterday; today |] -> TwoDays (today, yesterday)
     | _ -> NoDataForADay
+
+let fromResult x = async { return x }
