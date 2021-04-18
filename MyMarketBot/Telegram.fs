@@ -1,8 +1,10 @@
 ﻿namespace MyMarketBot
 
 open System
+open System.IO
 open Telegram.Bot
 open Telegram.Bot.Types
+open Telegram.Bot.Types.InputFiles
 
 type Bot(bot: ITelegramBotClient) =
     let helloMessage firstName lastName chatId =
@@ -34,3 +36,8 @@ module Telegram =
 
     let send (chatId: int64) message  (bot: Bot) =
         bot.Bot.SendTextMessageAsync(ChatId chatId, message) |> Async.AwaitTask
+        
+    let sendPicture (chatId: int64) message url (bot: Bot) = async {
+        use file = File.Open(url, FileMode.Open)
+        return! bot.Bot.SendPhotoAsync(ChatId chatId, InputOnlineFile(file), message) |> Async.AwaitTask
+    }

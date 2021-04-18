@@ -38,3 +38,5 @@ let prepareMessage (indexes: (string * MoexDayData)[]) (currencies: (string * Mo
         (toString (sprintf "%.2f") currencies.["EUR"])
 
     builder.ToString()
+
+let zcyc = "🇷🇺 Кривая доходности ОФЗ, " + DateTime.Today.ToShortDateString()
