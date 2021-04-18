@@ -14,13 +14,11 @@ let loadZcyc now = async {
     return data.Data.Rows |> Array.map (fun x -> (x.Period, x.Value))
 }
 
-let fromResult x = async { return x }
-
 let rec loadZcycAround now = async {
     let! data = loadZcyc now
     
     return!
         if data.Length = 0
         then loadZcycAround (Common.yesterday now)
-        else fromResult (now, data)
+        else Common.fromResult (now, data)
 }
