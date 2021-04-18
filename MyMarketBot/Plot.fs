@@ -29,6 +29,6 @@ let execute py scriptPath =
     let info = ProcessStartInfo()
     info.FileName       <- py
     info.Arguments      <- scriptPath
-    info.CreateNoWindow <- true
+    info.CreateNoWindow <- false
     
     Process.Start(info).WaitForExitAsync() |> Async.AwaitTask
