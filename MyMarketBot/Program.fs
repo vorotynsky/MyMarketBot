@@ -25,11 +25,11 @@ let zcyc bot chatId = async {
     let! _, m = YieldCurve.loadZcycAround (DateTime.Now.AddMonths(-1))
     let! _, w = YieldCurve.loadZcycAround (DateTime.Now.AddDays(-7.0))
     let! _, n = YieldCurve.loadZcycAround (DateTime.Now)
-
-    do Plot.generateScript "./plot.py" "./plot_data.py" (Plot.makeZcycScript (n, w, m))
-    do! Plot.execute python (Path.GetFileName "./plot_data.py")
     
     let! mos = MosPrime.readTable DateTime.Now
+
+    do Plot.generateScript "./zcyc.py" "./zcyc_data.py" (Plot.makeZcycScript (n, w, m))
+    do! Plot.execute python (Path.GetFileName "./zcyc_data.py")
     
     do Plot.generateScript "./mosPrime.py" "./mosPrime_data.py" (Plot.makeMosPrimeScript mos)
     do! Plot.execute python (Path.GetFileName "./mosPrime_data.py")

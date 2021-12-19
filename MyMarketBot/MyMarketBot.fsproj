@@ -18,7 +18,7 @@
         <Content Include="mosPrime.py">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-        <Content Include="plot.py">
+        <Content Include="zcyc.py">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
