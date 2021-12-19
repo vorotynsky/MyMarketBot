@@ -10,10 +10,14 @@
         <Compile Include="Moex\Index.fs" />
         <Compile Include="Moex\Currency.fs" />
         <Compile Include="Moex\YieldCurve.fs" />
+        <Compile Include="Cbr\MosPrime.fs" />
         <Compile Include="Plot.fs" />
         <Compile Include="Telegram.fs" />
         <Compile Include="Message.fs" />
         <Compile Include="Program.fs" />
+        <Content Include="mosPrime.py">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <Content Include="plot.py">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>

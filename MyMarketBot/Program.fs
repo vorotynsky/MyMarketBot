@@ -5,6 +5,7 @@ open System.IO
 open MyMarketBot.Telegram
 open MyMarketBot.Moex
 open MyMarketBot.Moex.Index
+open MyMarketBot.Cbr
 
 let asyncWait async = (Async.StartAsTask async).Wait()
 
@@ -25,14 +26,21 @@ let zcyc bot chatId = async {
     let! _, w = YieldCurve.loadZcycAround (DateTime.Now.AddDays(-7.0))
     let! _, n = YieldCurve.loadZcycAround (DateTime.Now)
 
-    do Plot.generateScript "./plot.py" "./plot_data.py" (n, w, m)
+    do Plot.generateScript "./plot.py" "./plot_data.py" (Plot.makeZcycScript (n, w, m))
     do! Plot.execute python (Path.GetFileName "./plot_data.py")
+    
+    let! mos = MosPrime.readTable DateTime.Now
+    
+    do Plot.generateScript "./mosPrime.py" "./mosPrime_data.py" (Plot.makeMosPrimeScript mos)
+    do! Plot.execute python (Path.GetFileName "./mosPrime_data.py")
 
-    do! sendPicture chatId Message.zcyc "./zcyc.png" bot |> Async.Ignore    
+    do! sendPicture chatId Message.zcyc "./zcyc.png" bot |> Async.Ignore
+    do! sendPicture chatId Message.mosPrime "./mosprime.png" bot |> Async.Ignore
 }
 
 [<EntryPoint>]
 let main args =
+    
     let token = Environment.GetEnvironmentVariable "TELEGRAM_BOT_TOKEN"
     let chatId = Environment.GetEnvironmentVariable "TELEGRAM_SUBSCRIBER_ID" |> Int64.Parse
     
