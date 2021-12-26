@@ -21,6 +21,6 @@ ldg = plt.legend(['on', '1w', '2w', '1m', '2m', '3m', '6m'], loc=0,)
 locator = mdate.AutoDateLocator()
 plt.gca().xaxis.set_major_locator(locator)
 
-plt.grid(linestyle='dotted')
+plt.grid(color='whitesmoke', linestyle='dotted')
 
 plt.savefig("mosprime.png", facecolor='w', dpi=240)
