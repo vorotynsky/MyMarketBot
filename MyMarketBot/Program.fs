@@ -28,14 +28,15 @@ let zcyc bot chatId = async {
     
     let! mos = MosPrime.readTable DateTime.Now
 
-    do Plot.generateScript "./zcyc.py" "./zcyc_data.py" (Plot.makeZcycScript (n, w, m))
-    do! Plot.execute python (Path.GetFileName "./zcyc_data.py")
+    let (~~) (str: string): string = Path.Join(AppDomain.CurrentDomain.BaseDirectory, str)
+    do Plot.generateScript ~~"zcyc.py" ~~"zcyc_data.py" (Plot.makeZcycScript (n, w, m))
+    do! Plot.execute python (Path.GetFileName ~~"./zcyc_data.py")
     
-    do Plot.generateScript "./mosPrime.py" "./mosPrime_data.py" (Plot.makeMosPrimeScript mos)
-    do! Plot.execute python (Path.GetFileName "./mosPrime_data.py")
+    do Plot.generateScript ~~"mosPrime.py" ~~"mosPrime_data.py" (Plot.makeMosPrimeScript mos)
+    do! Plot.execute python (Path.GetFileName ~~"mosPrime_data.py")
 
-    do! sendPicture chatId Message.zcyc "./zcyc.png" bot |> Async.Ignore
-    do! sendPicture chatId Message.mosPrime "./mosprime.png" bot |> Async.Ignore
+    do! sendPicture chatId Message.zcyc ~~"zcyc.png" bot |> Async.Ignore
+    do! sendPicture chatId Message.mosPrime ~~"mosprime.png" bot |> Async.Ignore
 }
 
 [<EntryPoint>]
