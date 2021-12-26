@@ -23,11 +23,20 @@ This bot is a console application that sends a message to the specified user and
 > The Moscow Exchange provides close values after 19:00 MSK.
 > If you run this bot before 19:00 MSK or on weekends you will get yesterday values or N/D.
 
+## Plots
+
+MyMarketBots sends data visualizations.
+
 ### ZCYC
+Yield curve (zcyc from moex).
 
-This bot can send Yield curve (zcyc from moex).
+![Example of zcyc](./img/zcyc.jpg)
 
-![Example of zcyc](./zcyc.jpg)
+### MosPrime
+
+Fixing of reference rate based on the offer rates of Russian Ruble deposits.
+
+![Example of mosprime](./img/mosprime.jpg)
 
 ---
 
@@ -37,11 +46,10 @@ Steps to run this bot:
 
 1. Build the solution using `dotnet build`.
 2. Set env-variables `TELEGRAM_BOT_TOKEN` and `TELEGRAM_SUBSCRIBER_ID`.
-3. Set path to python interpreter to `PYTHON_INTERPRETER`.S
+3. Set path to python interpreter to `PYTHON_INTERPRETER`.
 4. Run F# project `dotnet run --project MyMarketBot -daily -zcyc`
 
 Check [a GitHub action](https://github.com/vorotynsky/MyMarketBot/blob/master/.github/workflows/evening.yml) to see these steps.
-
 
 
 ### Arguments

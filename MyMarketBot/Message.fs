@@ -40,3 +40,4 @@ let prepareMessage (indexes: (string * MoexDayData)[]) (currencies: (string * Mo
     builder.ToString()
 
 let zcyc = "🇷🇺 Кривая доходности ОФЗ, " + DateTime.Today.ToShortDateString()
+let mosPrime = "🇷🇺 MosPrime Rate, " + DateTime.Today.ToShortDateString()

@@ -5,6 +5,7 @@ open System.IO
 open MyMarketBot.Telegram
 open MyMarketBot.Moex
 open MyMarketBot.Moex.Index
+open MyMarketBot.Cbr
 
 let asyncWait async = (Async.StartAsTask async).Wait()
 
@@ -24,18 +25,22 @@ let zcyc bot chatId = async {
     let! _, m = YieldCurve.loadZcycAround (DateTime.Now.AddMonths(-1))
     let! _, w = YieldCurve.loadZcycAround (DateTime.Now.AddDays(-7.0))
     let! _, n = YieldCurve.loadZcycAround (DateTime.Now)
-
-    let (~~) (str: string): string = Path.Join(AppDomain.CurrentDomain.BaseDirectory, str)
-    let src, data, picture = ~~"plot.py", ~~"plot_data.py", ~~"zcyc.png"
     
-    do Plot.generateScript src data (n, w, m)
-    do! Plot.execute python data picture
+    let! mos = MosPrime.readTable DateTime.Now
 
-    do! sendPicture chatId Message.zcyc picture bot |> Async.Ignore    
+    do Plot.generateScript "./zcyc.py" "./zcyc_data.py" (Plot.makeZcycScript (n, w, m))
+    do! Plot.execute python (Path.GetFileName "./zcyc_data.py")
+    
+    do Plot.generateScript "./mosPrime.py" "./mosPrime_data.py" (Plot.makeMosPrimeScript mos)
+    do! Plot.execute python (Path.GetFileName "./mosPrime_data.py")
+
+    do! sendPicture chatId Message.zcyc "./zcyc.png" bot |> Async.Ignore
+    do! sendPicture chatId Message.mosPrime "./mosprime.png" bot |> Async.Ignore
 }
 
 [<EntryPoint>]
 let main args =
+    
     let token = Environment.GetEnvironmentVariable "TELEGRAM_BOT_TOKEN"
     let chatId = Environment.GetEnvironmentVariable "TELEGRAM_SUBSCRIBER_ID" |> Int64.Parse
     

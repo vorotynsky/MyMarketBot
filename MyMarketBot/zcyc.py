@@ -18,4 +18,7 @@ plt.scatter(x, y0, marker=".", c='red')
 
 plt.legend(["week ago", "month ago", "now"])
 
-plt.savefig(sys.argv[1], facecolor='w', dpi=240)
+fig = plt.gcf()
+fig.tight_layout()
+
+plt.savefig("zcyc.png", facecolor='w', dpi=240)
