@@ -1,5 +1,6 @@
 ﻿import matplotlib.pyplot as plt
 import matplotlib.dates as mdate
+import sys
 
 data = []
 
@@ -23,4 +24,4 @@ plt.gca().xaxis.set_major_locator(locator)
 
 plt.grid(color='whitesmoke', linestyle='dotted')
 
-plt.savefig("mosprime.png", facecolor='w', dpi=240)
+plt.savefig(sys.argv[1], facecolor='w', dpi=240)
