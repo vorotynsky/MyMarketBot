@@ -27,10 +27,10 @@ let generateScript input output putData =
     |> putData
     |> fun x -> File.WriteAllText(output, x)
     
-let execute py scriptPath =
+let execute py scriptPath output =
     let info = ProcessStartInfo()
     info.FileName       <- py
-    info.Arguments      <- $"%s{scriptPath}"
+    info.Arguments      <- $"%s{scriptPath} %s{output}"
     info.CreateNoWindow <- false
     
     Process.Start(info).WaitForExitAsync() |> Async.AwaitTask
