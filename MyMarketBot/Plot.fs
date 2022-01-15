@@ -8,6 +8,7 @@ let pyList values =
     str.Replace(";", ",")
        .Replace("M", "")
        .Replace("\n", "")
+       .Replace("Some", "") // for optionals
          
 let makeZcycScript (n, w, m) script =
     let substitute c d (s: string) =
