@@ -22,6 +22,9 @@ ldg = plt.legend(['on', '1w', '2w', '1m', '2m', '3m', '6m'], loc=0,)
 locator = mdate.AutoDateLocator()
 plt.gca().xaxis.set_major_locator(locator)
 
+formatter = mdate.DateFormatter("%d.%m")
+plt.gca().xaxis.set_major_formatter(formatter)
+
 plt.grid(color='whitesmoke', linestyle='dotted')
 
 plt.savefig(sys.argv[1], facecolor='w', dpi=240)
