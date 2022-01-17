@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="Market.fs" />
         <Compile Include="Moex\Common.fs" />
         <Compile Include="Moex\Index.fs" />
         <Compile Include="Moex\Currency.fs" />

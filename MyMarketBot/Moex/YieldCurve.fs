@@ -1,6 +1,7 @@
 ﻿module MyMarketBot.Moex.YieldCurve
 
 open FSharp.Data
+open MyMarketBot
 
 [<Literal>]
 let url = """https://iss.moex.com/iss/engines/stock/zcyc.xml?iss.only=yearyields&iss.meta=off&yearyields.columns=period,value&date=2021-04-14"""
@@ -19,6 +20,6 @@ let rec loadZcycAround now = async {
     
     return!
         if data.Length = 0
-        then loadZcycAround (Common.yesterday now)
+        then loadZcycAround (Market.yesterday now)
         else Common.fromResult (now, data)
 }

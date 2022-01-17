@@ -2,7 +2,7 @@
 
 open System
 open System.Text
-open MyMarketBot.Moex.Common
+open MyMarketBot.Market
 open MyMarketBot.Moex.Index
 
 let trendIcon change = if (change >= 0.0) then "📈" else "📉"
@@ -15,7 +15,7 @@ let toString formatter = function
             sprintf "%s (%s %+.2f%%)" (formatter today) (trendIcon change) change
           
 
-let prepareMessage (indexes: (string * MoexDayData)[]) (currencies: (string * MoexDayData)[]) =
+let prepareMessage (indexes: (string * MarketDayData)[]) (currencies: (string * MarketDayData)[]) =
     let indexes = dict indexes 
     let currencies = dict currencies
     let message icon index = sprintf "%s %s: %s" icon index (toString (sprintf "%.2f") indexes.[index])
