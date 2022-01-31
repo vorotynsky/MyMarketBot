@@ -29,4 +29,4 @@ jobs:
       env: 
         TELEGRAM_BOT_TOKEN:  ${{ secrets.TELEGRAM_BOT_TOKEN }}
         TELEGRAM_SUBSCRIBER_ID:  ${{ secrets.TELEGRAM_SUBSCRIBER_ID }}
-      run: dotnet run --no-build --configuration Release --project MyMarketBot -daily
+      run: dotnet run --no-build --configuration Release --project MyMarketBot -moex

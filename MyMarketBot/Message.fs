@@ -2,6 +2,7 @@
 
 open System
 open System.Text
+open Microsoft.FSharp.Core
 open MyMarketBot.Market
 open MyMarketBot.Moex.Index
 
@@ -13,31 +14,39 @@ let toString formatter = function
         | TwoDays (today, yesterday) ->
             let change = float((today - yesterday) / yesterday * 100M)
             sprintf "%s (%s %+.2f%%)" (formatter today) (trendIcon change) change
-          
+            
+type MessageInfo =
+    | IndexMessage of string * string * MarketDayData
+    | TextMessage  of string
+    | JoinedMessage of MessageInfo[]
 
-let prepareMessage (indexes: (string * MarketDayData)[]) (currencies: (string * MarketDayData)[]) =
+let rec singleMessage (sb: StringBuilder) = function
+    | TextMessage text -> Printf.bprintf sb $"%s{text}\n"
+    | IndexMessage(icon, name, info) -> Printf.bprintf sb "%s %s: %s\n" icon name (toString (sprintf "%.2f") info)
+    | JoinedMessage infos -> Array.iter (singleMessage sb) infos
+
+let prepareMessages (messages: MessageInfo[]) =
+    let sb = StringBuilder()
+    Array.iter (singleMessage sb) messages
+    sb.ToString()
+    
+
+let moexMessage (indexes: (string * MarketDayData)[]) (currencies: (string * MarketDayData)[]) =
     let indexes = dict indexes 
     let currencies = dict currencies
-    let message icon index = sprintf "%s %s: %s" icon index (toString (sprintf "%.2f") indexes.[index])
     
-    let builder = StringBuilder()
-    let sbprintf format = Printf.bprintf builder format
-    
-    
-    sbprintf "%s итоги дня:\n\n" (DateTime.Today.ToShortDateString())
-    
-    builder.AppendJoin("\n", Array.map (message "🇷🇺") moexIndexes) |> ignore
-    
-    sbprintf "\n\n📊 Spread index: %s"
-        (toString
-             (sprintf "%.2f%%" << rangeSpreadIndex)
-             (spreadIndex indexes.["IMOEX"] indexes.["RGBITR"]))
+    prepareMessages [|
+        TextMessage $"%s{DateTime.Today.ToShortDateString()} итоги дня:\n"
         
-    sbprintf "\n\n💵 USD/RUB: %s \n💶 EUR/RUB: %s"
-        (toString (sprintf "%.2f") currencies.["USD"])
-        (toString (sprintf "%.2f") currencies.["EUR"])
-
-    builder.ToString()
+        JoinedMessage (Array.map (fun x -> IndexMessage ("🇷🇺", x, indexes.[x])) moexIndexes)
+        
+        TextMessage "";
+        IndexMessage ("📊", "Spread index", spreadIndex indexes.["IMOEX"] indexes.["RGBITR"])
+        
+        TextMessage "";
+        IndexMessage ("💵", "USD/RUB", currencies.["USD"])
+        IndexMessage ("💶", "EUR/RUB", currencies.["EUR"])
+    |]
 
 let zcyc = "🇷🇺 Кривая доходности ОФЗ, " + DateTime.Today.ToShortDateString()
 let mosPrime = "🇷🇺 MosPrime Rate, " + DateTime.Today.ToShortDateString()
