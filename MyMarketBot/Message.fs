@@ -50,7 +50,7 @@ let moexMessage (indexes: (string * MarketDayData)[]) (currencies: (string * Mar
 
 let spxMessage spx =
     prepareMessages [|
-        TextMessage $"%s{DateTime.Today.Subtract(TimeSpan.FromDays 1).ToShortDateString()} итоги дня:\n"
+        TextMessage $"%s{DateTime.Today.Subtract(TimeSpan.FromDays 1.0).ToShortDateString()} итоги дня:\n"
         
         IndexMessage ("🇺🇸", "S&P 500", spx)
     |]
