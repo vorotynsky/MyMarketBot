@@ -12,6 +12,7 @@
         <Compile Include="Moex\Currency.fs" />
         <Compile Include="Moex\YieldCurve.fs" />
         <Compile Include="Cbr\MosPrime.fs" />
+        <Compile Include="SpGlobal\SPX.fs" />
         <Compile Include="Plot.fs" />
         <Compile Include="Telegram.fs" />
         <Compile Include="Message.fs" />
@@ -27,6 +28,19 @@
     <ItemGroup>
       <PackageReference Include="FSharp.Data" Version="3.3.3" />
       <PackageReference Include="Telegram.Bot" Version="15.7.1" />
+      <PackageReference Include="ExcelProvider" Version="2.0.0" />
     </ItemGroup>
+    
+    <PropertyGroup>
+        <SpxUrl>
+            https://www.spglobal.com/spdji/en/idsexport/file.xls?redesignExport=true&amp;selectedModule=PerformanceGraphView&amp;selectedSubModule=Graph&amp;indexId=340
+        </SpxUrl>
+    </PropertyGroup>
+    
+    <Target Name="DownloadContentFiles" BeforeTargets="BeforeBuild" Condition="!Exists('spx.xls') Or '$(Configuration)'=='RELEASE'">
+        <DownloadFile SourceUrl="$(SpxUrl)" DestinationFolder="$(MSBuildProjectDirectory)" DestinationFileName="spx.xls" Retries="10">
+            <Output TaskParameter="DownloadedFile" ItemName="Content" />
+        </DownloadFile>
+    </Target>
 
 </Project>

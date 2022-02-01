@@ -48,5 +48,12 @@ let moexMessage (indexes: (string * MarketDayData)[]) (currencies: (string * Mar
         IndexMessage ("💶", "EUR/RUB", currencies.["EUR"])
     |]
 
+let spxMessage spx =
+    prepareMessages [|
+        TextMessage $"%s{DateTime.Today.Subtract(TimeSpan.FromDays 1).ToShortDateString()} итоги дня:\n"
+        
+        IndexMessage ("🇺🇸", "S&P 500", spx)
+    |]
+
 let zcyc = "🇷🇺 Кривая доходности ОФЗ, " + DateTime.Today.ToShortDateString()
 let mosPrime = "🇷🇺 MosPrime Rate, " + DateTime.Today.ToShortDateString()

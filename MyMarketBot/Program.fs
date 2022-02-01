@@ -6,6 +6,7 @@ open MyMarketBot.Telegram
 open MyMarketBot.Moex
 open MyMarketBot.Moex.Index
 open MyMarketBot.Cbr
+open MyMarketBot.SpGlobal
 
 let asyncWait async = (Async.StartAsTask async).Wait()
 
@@ -18,6 +19,12 @@ let daily bot chatId = async {
     let message = Message.moexMessage indexes currencies
     do! send chatId message bot |> Async.Ignore
 }
+
+let spx bot chatId = 
+    let spx = SPX.readSpx (DateTime.Today)
+    let message = Message.spxMessage spx
+    
+    send chatId message bot |> Async.Ignore
 
 let zcyc bot chatId = async {
     let python = Environment.GetEnvironmentVariable "PYTHON_INTERPRETER"
@@ -48,12 +55,14 @@ let main args =
     
     let _moex = Array.contains "-moex" args
     let _zcyc = Array.contains "-zcyc" args
+    let _spx  = Array.contains "-spx"  args
    
     use bot = run token
     
     async {
         do! if _moex then daily bot chatId else Common.fromResult ()
-        do! if _zcyc  then zcyc  bot chatId else Common.fromResult ()
+        do! if _spx  then spx   bot chatId else Common.fromResult ()
+        do! if _zcyc then zcyc  bot chatId else Common.fromResult ()
     } |> asyncWait
     
     #if DEBUG

@@ -30,6 +30,9 @@ bld/
 [Oo]bj/
 [Ll]og/
 
+# Downloaded files for Type providers
+MyMarketBot/spx.xls
+
 # Visual Studio 2015/2017 cache/options directory
 .vs/
 
