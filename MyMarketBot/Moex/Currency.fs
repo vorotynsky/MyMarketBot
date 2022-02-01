@@ -1,6 +1,7 @@
 ﻿module MyMarketBot.Moex.Currency
 
 open FSharp.Data
+open MyMarketBot.Market
 open MyMarketBot.Moex.Common
 
 [<Literal>]

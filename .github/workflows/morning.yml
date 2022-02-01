@@ -1,9 +1,9 @@
-name: Evening message
+name: Morning message
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '00 16 * * 1-5'
+    - cron: '00 7 * * 1-5'
 
 jobs:
   build:
@@ -29,4 +29,4 @@ jobs:
       env: 
         TELEGRAM_BOT_TOKEN:  ${{ secrets.TELEGRAM_BOT_TOKEN }}
         TELEGRAM_SUBSCRIBER_ID:  ${{ secrets.TELEGRAM_SUBSCRIBER_ID }}
-      run: dotnet run --no-build --configuration Release --project MyMarketBot -moex
+      run: dotnet run --no-build --configuration Release --project MyMarketBot -spx

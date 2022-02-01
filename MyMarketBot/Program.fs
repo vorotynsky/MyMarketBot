@@ -6,18 +6,25 @@ open MyMarketBot.Telegram
 open MyMarketBot.Moex
 open MyMarketBot.Moex.Index
 open MyMarketBot.Cbr
+open MyMarketBot.SpGlobal
 
 let asyncWait async = (Async.StartAsTask async).Wait()
 
 let load f = Array.map (fun ticker -> f ticker DateTime.Now) >> Async.Parallel
 
 let daily bot chatId = async {
-    let! indexes = moexIndexes |> load Index.loadData
+    let! indexes = moexIndexes |> load loadData
     let! currencies = [| "USD"; "EUR" |] |> load Currency.loadData
 
-    let message = Message.prepareMessage indexes currencies
+    let message = Message.moexMessage indexes currencies
     do! send chatId message bot |> Async.Ignore
 }
+
+let spx bot chatId = 
+    let spx = SPX.readSpx (DateTime.Today)
+    let message = Message.spxMessage spx
+    
+    send chatId message bot |> Async.Ignore
 
 let zcyc bot chatId = async {
     let python = Environment.GetEnvironmentVariable "PYTHON_INTERPRETER"
@@ -46,14 +53,16 @@ let main args =
     let token = Environment.GetEnvironmentVariable "TELEGRAM_BOT_TOKEN"
     let chatId = Environment.GetEnvironmentVariable "TELEGRAM_SUBSCRIBER_ID" |> Int64.Parse
     
-    let _daily = Array.contains "-daily" args
-    let _zcyc  = Array.contains "-zcyc"  args
+    let _moex = Array.contains "-moex" args
+    let _zcyc = Array.contains "-zcyc" args
+    let _spx  = Array.contains "-spx"  args
    
     use bot = run token
     
     async {
-        do! if _daily then daily bot chatId else Common.fromResult ()
-        do! if _zcyc  then zcyc  bot chatId else Common.fromResult ()
+        do! if _moex then daily bot chatId else Common.fromResult ()
+        do! if _spx  then spx   bot chatId else Common.fromResult ()
+        do! if _zcyc then zcyc  bot chatId else Common.fromResult ()
     } |> asyncWait
     
     #if DEBUG

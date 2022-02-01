@@ -1,7 +1,7 @@
 ﻿module MyMarketBot.Moex.Index
 
-open System
 open FSharp.Data
+open MyMarketBot.Market
 open MyMarketBot.Moex.Common
 
 let moexIndexes = [| "IMOEX"; "RTSI"; "RGBI"; "RGBITR" |]
@@ -23,11 +23,6 @@ let loadData index now =
         return (index, data.Data.Rows |> makeData (fun x -> x.Tradedate) (fun x -> x.Close))
     }
     
-let spreadIndex imoex rgbitr =
-    let calculate imoex rgbitr = rgbitr / imoex
-    match (imoex, rgbitr) with
-    | (TwoDays (it, iy), TwoDays (bt, by)) -> TwoDays ((calculate it bt), (calculate iy by))
-    | (HasToday i, HasToday b)             -> Today    (calculate i  b)
-    | _                                    -> NoDataForADay
+let spreadIndex imoex rgbitr = zipWith (/) imoex rgbitr
 
 let rangeSpreadIndex x = (x - 0.184M) / (0.233M - 0.184M)
