@@ -11,7 +11,7 @@ let readSpx (now : DateTime) =
     
     let row =
         provider.Data
-        |> Seq.filter (fun x -> x.``S&P 500`` > 0)
+        |> Seq.filter (fun x -> x.``S&P 500`` > 0.0)
         |> Seq.filter (fun x -> (now.Subtract x.``Effective date ``).Days < 5)
         |> List.ofSeq
         |> List.sortByDescending (fun x -> x.``Effective date ``)
