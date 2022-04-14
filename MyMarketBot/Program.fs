@@ -14,7 +14,7 @@ let load f = Array.map (fun ticker -> f ticker DateTime.Now) >> Async.Parallel
 
 let daily bot chatId = async {
     let! indexes = moexIndexes |> load loadData
-    let! currencies = [| "USD"; "EUR" |] |> load Currency.loadData
+    let! currencies = [| "USD"; "EUR"; "CNY" |] |> load Currency.loadData
 
     let message = Message.moexMessage indexes currencies
     do! send chatId message bot |> Async.Ignore

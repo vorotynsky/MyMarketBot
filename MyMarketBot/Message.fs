@@ -46,6 +46,7 @@ let moexMessage (indexes: (string * MarketDayData)[]) (currencies: (string * Mar
         TextMessage "";
         IndexMessage ("💵", "USD/RUB", currencies.["USD"])
         IndexMessage ("💶", "EUR/RUB", currencies.["EUR"])
+        IndexMessage ("💴", "CNY/RUB", currencies.["CNY"])
     |]
 
 let spxMessage spx =
