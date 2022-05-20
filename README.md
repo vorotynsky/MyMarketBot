@@ -32,12 +32,6 @@ Yield curve (zcyc from moex).
 
 ![Example of zcyc](./img/zcyc.jpg)
 
-### MosPrime
-
-Fixing of reference rate based on the offer rates of Russian Ruble deposits.
-
-![Example of mosprime](./img/mosprime.jpg)
-
 ---
 
 ## Set up

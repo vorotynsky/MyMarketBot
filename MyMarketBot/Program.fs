@@ -5,7 +5,6 @@ open System.IO
 open MyMarketBot.Telegram
 open MyMarketBot.Moex
 open MyMarketBot.Moex.Index
-open MyMarketBot.Cbr
 open MyMarketBot.SpGlobal
 
 let asyncWait async = (Async.StartAsTask async).Wait()
@@ -33,18 +32,11 @@ let zcyc bot chatId = async {
     let! _, w = YieldCurve.loadZcycAround (DateTime.Now.AddDays(-7.0))
     let! _, n = YieldCurve.loadZcycAround (DateTime.Now)
     
-    let! mos = MosPrime.readTable DateTime.Now
-
     let (~~) (str: string): string = Path.Join(AppDomain.CurrentDomain.BaseDirectory, str)
 
     do Plot.generateScript ~~"zcyc.py" ~~"zcyc_data.py" (Plot.makeZcycScript (n, w, m))
     do! Plot.execute python ~~"zcyc_data.py" ~~"zcyc.png"
-    
-    do Plot.generateScript ~~"mosPrime.py" ~~"mosPrime_data.py" (Plot.makeMosPrimeScript mos)
-    do! Plot.execute python ~~"mosPrime_data.py" ~~"mosprime.png"
-
     do! sendPicture chatId Message.zcyc ~~"zcyc.png" bot |> Async.Ignore
-    do! sendPicture chatId Message.mosPrime ~~"mosprime.png" bot |> Async.Ignore
 }
 
 [<EntryPoint>]
