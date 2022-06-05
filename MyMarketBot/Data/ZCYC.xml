@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<data id="yearyields">
+<rows>
+<row period="0.25" value="4.8015" />
+<row period="0.50" value="4.9103" />
+<row period="0.75" value="5.0476" />
+<row period="1.00" value="5.1977" />
+<row period="2.00" value="5.7793" />
+<row period="3.00" value="6.2246" />
+<row period="5.00" value="6.7690" />
+<row period="7.00" value="7.0443" />
+<row period="10.00" value="7.2305" />
+<row period="15.00" value="7.3553" />
+<row period="20.00" value="7.4201" />
+<row period="30.00" value="7.5040" />
+</rows>
+</data>
+</document>

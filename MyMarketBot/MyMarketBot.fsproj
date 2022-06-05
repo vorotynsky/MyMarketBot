@@ -20,6 +20,9 @@
         <Content Include="zcyc.py">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+        <Content Include="Data\RTSI.xml" />
+        <Content Include="Data\USDRUB.xml" />
+        <Content Include="Data\ZCYC.xml" />
     </ItemGroup>
 
     <ItemGroup>

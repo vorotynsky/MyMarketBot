@@ -6,7 +6,7 @@ open MyMarketBot
 [<Literal>]
 let url = """https://iss.moex.com/iss/engines/stock/zcyc.xml?iss.only=yearyields&iss.meta=off&yearyields.columns=period,value&date=2021-04-14"""
 
-type ZcycProvider = XmlProvider<url>
+type ZcycProvider = XmlProvider<"Data/ZCYC.xml">
 
 let makeUrl now = url.Replace ("2021-04-14", Common.formatDate now)
 

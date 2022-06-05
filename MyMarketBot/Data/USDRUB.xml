@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<data id="securities">
+<rows>
+<row secid="USD/RUB" tradedate="2020-01-08" rate="61.58460" />
+<row secid="USD/RUB" tradedate="2020-01-09" rate="61.33150" />
+</rows>
+</data>
+</document>

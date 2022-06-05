@@ -8,7 +8,7 @@ open MyMarketBot.Moex.Common
 let currencyUrl =
     """https://iss.moex.com/iss/statistics/engines/futures/markets/indicativerates/securities/USD/RUB.xml?from=2020-01-08&till=2020-01-09&iss.meta=off&iss.cursor=off&securities.columns=secid,tradedate,rate&iss.cursor=off&iss.only=securities"""
     
-type MoexCurrencyProvider = XmlProvider<currencyUrl>
+type MoexCurrencyProvider = XmlProvider<"Data/USDRUB.xml">
 
 let makeUrl = makeUrlBuilder currencyUrl "USD" "2020-01-08" "2020-01-09"
 
